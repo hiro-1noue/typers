@@ -1,8 +1,13 @@
-use enigo::{Enigo, Mouse, Settings};
+use rdev::{listen, Event, EventType};
 
 fn main() {
-    let enigo = Enigo::new(&Settings::default()).unwrap();
-    let (x, y) = enigo.location().unwrap();
+    if let Err(error) = listen(callback) {
+        println!("Error: {:?}", error);
+    }
+}
 
-    println!("({}, {})", x, y);
+fn callback(event: Event) {
+    if let EventType::MouseMove { x, y } = event.event_type {
+        println!("{} {}", x, y);
+    }
 }
