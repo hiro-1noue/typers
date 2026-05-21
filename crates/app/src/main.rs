@@ -1,3 +1,8 @@
+use enigo::{Enigo, Mouse, Settings};
+
 fn main() {
-    println!("Hello, world!");
+    let enigo = Enigo::new(&Settings::default()).unwrap();
+    let (x, y) = enigo.location().unwrap();
+
+    println!("({}, {})", x, y);
 }
