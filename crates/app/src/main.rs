@@ -37,6 +37,11 @@ fn callback(event: Event) {
     if let EventType::MouseMove { x, y } = event.event_type {
         let mut s = STATE.lock().unwrap();
         s.buf.push((x, y));
+        let len = s.buf.len();
+
+        if len > WINDOW {
+            s.buf.drain(..len - WINDOW);
+        }
 
         if s.buf.len() < WINDOW { return; }
 
