@@ -3234,11 +3234,15 @@ dependencies = [
  "eframe",
  "egui",
  "rdev",
+ "typers-core",
 ]
 
 [[package]]
 name = "typers-core"
 version = "0.1.0"
+dependencies = [
+ "rdev",
+]
 
 [[package]]
 name = "uds_windows"

@@ -7,3 +7,4 @@ edition = "2024"
 eframe = "0.34.2"
 egui = "0.34.2"
 rdev = "0.5"
+typers-core = { path = "../typers-core" }
