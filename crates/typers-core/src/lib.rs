@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Dir { R, L, U, D }
 
@@ -13,5 +15,11 @@ pub fn accumulate(pts: &[(f64, f64)]) -> (f64, f64) {
     pts.windows(2).fold((0.0, 0.0), |(ax, ay), w| {
         (ax + w[1].0 - w[0].0, ay + w[1].1 - w[0].1)
     })
+}
+
+pub fn build_map() -> HashMap<Vec<Dir>, &'static str> {
+    let mut map = HashMap::new();
+
+    map
 }
 
