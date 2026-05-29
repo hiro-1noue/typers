@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Dir { R, L, U, D }
 
 pub fn classify(dx: f64, dy: f64) -> Dir {
@@ -19,6 +19,19 @@ pub fn accumulate(pts: &[(f64, f64)]) -> (f64, f64) {
 
 pub fn build_map() -> HashMap<Vec<Dir>, &'static str> {
     let mut map = HashMap::new();
+
+    map.insert(vec![Dir::R, Dir::U], "e");
+    map.insert(vec![Dir::R, Dir::D], "t");
+    map.insert(vec![Dir::L, Dir::U], "a");
+    map.insert(vec![Dir::L, Dir::D], "o");
+    map.insert(vec![Dir::U, Dir::R], "i");
+    map.insert(vec![Dir::U, Dir::L], "n");
+    map.insert(vec![Dir::D, Dir::R], "s");
+    map.insert(vec![Dir::D, Dir::L], "h");
+    map.insert(vec![Dir::R, Dir::L], "r");
+    map.insert(vec![Dir::L, Dir::R], "d");
+    map.insert(vec![Dir::U, Dir::D], "l");
+    map.insert(vec![Dir::D, Dir::U], "u");
 
     map
 }
