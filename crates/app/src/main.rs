@@ -1,17 +1,22 @@
 use rdev::{listen, Event, EventType};
-use std::sync::Mutex;
-use typers_core::{Dir, classify, accumulate};
+use std::sync::{Mutex, LazyLock};
+use typers_core::{Dir, classify, accumulate, Decoder};
 
-static STATE: Mutex<State> = Mutex::new(State::new());
+static STATE: LazyLock<Mutex<State>> = LazyLock::new(|| Mutex::new(State::new()));
 
 struct State {
     buf: Vec<(f64, f64)>,
     current_dir: Option<Dir>,
+    decoder: Decoder,
 }
 
 impl State {
-    const fn new() -> Self {
-        Self { buf: Vec::new(), current_dir: None }
+    fn new() -> Self {
+        Self {
+            buf: Vec::new(),
+            current_dir: None,
+            decoder: Decoder::new(),
+        }
     }
 }
 
@@ -38,9 +43,10 @@ fn callback(event: Event) {
         let dir = classify(dx, dy);
 
         if s.current_dir != Some(dir) {
-            if let Some(prev) = s.current_dir {
-                println!("{:?} → {:?}", prev, dir);
+            if let Some(ch) = s.decoder.push(dir) {
+                println!("decoded: {ch}");
             }
+
             s.current_dir = Some(dir);
         }
     }}

@@ -17,22 +17,48 @@ pub fn accumulate(pts: &[(f64, f64)]) -> (f64, f64) {
     })
 }
 
-pub fn build_map() -> HashMap<Vec<Dir>, &'static str> {
+pub fn build_map() -> HashMap<(Dir, Dir), &'static str> {
     let mut map = HashMap::new();
 
-    map.insert(vec![Dir::R, Dir::U], "e");
-    map.insert(vec![Dir::R, Dir::D], "t");
-    map.insert(vec![Dir::L, Dir::U], "a");
-    map.insert(vec![Dir::L, Dir::D], "o");
-    map.insert(vec![Dir::U, Dir::R], "i");
-    map.insert(vec![Dir::U, Dir::L], "n");
-    map.insert(vec![Dir::D, Dir::R], "s");
-    map.insert(vec![Dir::D, Dir::L], "h");
-    map.insert(vec![Dir::R, Dir::L], "r");
-    map.insert(vec![Dir::L, Dir::R], "d");
-    map.insert(vec![Dir::U, Dir::D], "l");
-    map.insert(vec![Dir::D, Dir::U], "u");
+    map.insert((Dir::R, Dir::U), "e");
+    map.insert((Dir::R, Dir::D), "t");
+    map.insert((Dir::L, Dir::U), "a");
+    map.insert((Dir::L, Dir::D), "o");
+    map.insert((Dir::U, Dir::R), "i");
+    map.insert((Dir::U, Dir::L), "n");
+    map.insert((Dir::D, Dir::R), "s");
+    map.insert((Dir::D, Dir::L), "h");
+    map.insert((Dir::R, Dir::L), "r");
+    map.insert((Dir::L, Dir::R), "d");
+    map.insert((Dir::U, Dir::D), "l");
+    map.insert((Dir::D, Dir::U), "u");
 
     map
 }
+
+pub struct Decoder {
+    prev_dir: Option<Dir>,
+    map: HashMap<(Dir, Dir), &'static str>,
+}
+
+impl Decoder {
+    pub fn new() -> Self {
+        Self {
+            prev_dir: None,
+            map: build_map(),
+        }
+    }
+
+    pub fn push(&mut self, dir: Dir) -> Option<&'static str> {
+        let result = if let Some(prev) = self.prev_dir {
+            self.map.get(&(prev, dir)).copied()
+        } else {
+            None
+        };
+
+        self.prev_dir = Some(dir);
+        result
+    }
+}
+
 
